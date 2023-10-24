@@ -7,6 +7,8 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth"; //getAuth is used to get the auth object from the firebase app instance below
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore"; //getFirestore is used to create a database. doc give us access to the document in the database. getDoc is used to get the document data and
 // setDoc is used to set the document data
@@ -74,3 +76,10 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 
   return await signInWithEmailAndPassword(auth, email, password);
 };
+
+export const signOutUser = async () => signOut(auth);
+
+// the onAuthStateChanged firebase function is an open listener, meaning that after we call it
+// it will always listen for any changes in the authentication state of the user
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);
