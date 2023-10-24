@@ -3,6 +3,7 @@ import { createContext, useState, useEffect } from "react";
 import {
   onAuthStateChangedListener,
   signOutUser,
+  createUserDocumentFromAuth,
 } from "../utils/firebase/firebase.utils";
 
 // see this as the actual value that you want to access
@@ -21,14 +22,14 @@ export const UserProvider = ({ children }) => {
   // when we pass in an empty bracket as the second argument to the useEffect hook, it means that the useEffect hook will only run once when the component mounts.
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
-      // onAuthStateChanged returns a function that can be used to stop listening for auth state changes.
-      console.log("user from user.context", user);
+      if (user) {
+        createUserDocumentFromAuth(user);
+      }
       setCurrentUser(user);
     });
 
-    return unsubscribe; // when using useEffect, whatever is returned will run when the component unmounts
+    return unsubscribe;
   }, []);
-
   // the value prop here which is currentUser and setCurrentUser as an object is what will be returned when we import the UserContext in the components that need it by calling useContext(UserContext)
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

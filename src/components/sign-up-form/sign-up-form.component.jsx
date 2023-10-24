@@ -6,7 +6,6 @@ import {
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 // these fields would have been individually declared in the state. this is just a shorthand
-import { UserContext } from "../../contexts/user.context";
 
 import Button from "../button/button.component";
 import "./sign-up-form.styles.scss";
@@ -21,8 +20,6 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
   // this function is used to reset the form fields
-  const { setCurrentUser } = useContext(UserContext);
-  console.log("hit");
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
@@ -42,7 +39,6 @@ const SignUpForm = () => {
         email,
         password
       );
-      setCurrentUser(user);
 
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
