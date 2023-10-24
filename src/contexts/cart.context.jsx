@@ -1,11 +1,14 @@
 import { createContext, useState } from "react";
 
+// This function takes in an array of cart items and a product to add to the cart
 export const addCartItem = (cartItems, productToAdd) => {
+  // Check if the product to add already exists in the cart
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === productToAdd.id
   );
 
   if (existingCartItem) {
+    // If the product already exists in the cart, increment its quantity by 1
     return cartItems.map((cartItem) =>
       cartItem.id === productToAdd.id
         ? { ...cartItem, quantity: cartItem.quantity + 1 }
@@ -13,9 +16,9 @@ export const addCartItem = (cartItems, productToAdd) => {
     );
   }
 
+  // If the product does not exist in the cart, add it with a quantity of 1
   return [...cartItems, { ...productToAdd, quantity: 1 }];
 };
-
 export const CartContext = createContext({
   isCartOpen: false,
   setIsOpen: () => {},
