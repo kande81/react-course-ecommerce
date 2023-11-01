@@ -7,7 +7,12 @@ import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 
 import { ReactComponent as CrownLogo } from "../../assets/crown.svg"; // the react component as syntax allows us to import svgs as react components. this allows us to style the svg with css. the svg is stored in the crownLogo variable
-import "./navigation.styles.scss";
+import {
+  NavigationContainer,
+  NavLinks,
+  NavLink,
+  LogoContainer,
+} from "./navigation.styles";
 
 // when the useContext hook is used inside a component, that component will re-render any time the value of the UserContext changes
 const Navigation = () => {
@@ -18,31 +23,29 @@ const Navigation = () => {
 
   return (
     <>
-      <div className="navigation">
-        <Link className="logo-container" to="/">
+      <NavigationContainer>
+        <LogoContainer to="/">
           <CrownLogo className="logo" />
-        </Link>
-        <div className="nav-links-container">
-          <Link className="nav-link" to="/shop">
-            Shop
-          </Link>
+        </LogoContainer>
+        <NavLinks>
+          <NavLink to="/shop">Shop</NavLink>
           {
             // if the currentUser is not null, then we show the sign out link
             currentUser ? (
-              <span className="nav-link" onClick={signOutUser}>
+              <NavLink as="span" onClick={signOutUser}>
+                {" "}
+                {/* the as prop allows us to change the element that is rendered. in this case, we are changing the element from a link to a span */}
                 SIGN OUT
-              </span>
+              </NavLink>
             ) : (
               // if the currentUser is null, then we show the sign in link
-              <Link className="nav-link" to="/auth">
-                SIGN IN
-              </Link>
+              <NavLink to="/auth">SIGN IN</NavLink>
             )
           }
           <CartIcon />
-        </div>
+        </NavLinks>
         {isCartOpen && <CartDropdown />}
-      </div>
+      </NavigationContainer>
       <Outlet />{" "}
       {/* the outlet is a placeholder for where the child components will be rendered */}
     </>
