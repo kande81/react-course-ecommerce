@@ -10,8 +10,23 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth"; //getAuth is used to get the auth object from the firebase app instance below
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore"; //getFirestore is used to create a database. doc give us access to the document in the database. getDoc is used to get the document data and
+
+//getFirestore is used to create a database. doc give us access to the document in the database. getDoc is used to get the document data and
 // setDoc is used to set the document data
+// The 'collection' method from Firestore is used to get a reference to a collection in the database.
+// This method takes in a string argument which is the path to the desired collection.
+
+// The 'writeBatch' method from Firestore is used to perform multiple write operations as a single batch.
+// It can be used to set, update, or delete multiple documents in a single operation, which helps to ensure atomicity.
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+} from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDuhp9DPuhnBNFTvYD9N4FgMRNUdWmQVR4",
   authDomain: "react-full-ecommerce-fcfa9.firebaseapp.com",
@@ -38,6 +53,35 @@ export const signInWithGoogleRedirect = () =>
 export const db = getFirestore(); // this creates the database
 
 // so this function can be called after the user go through the google sign in process. Then we will try to create a document for the user in the database in a collection called users and the id of the user will be the uid that is returned from the google sign in process
+
+// This function, addCollectionAndDocuments, is an asynchronous function that takes in two arguments:
+// 1. collectionKey: a string that represents the name of the collection in the Firestore database.
+// 2. objectsToAdd: an array of objects that need to be added to the collection in the Firestore database.
+//
+// The function first gets a reference to the collection in the Firestore database using the 'collection' method.
+// Then, it creates a new write batch using the 'writeBatch' method.
+//
+// The function then iterates over the 'objectsToAdd' array. For each object, it:
+// - Creates a new document reference in the collection. The ID of the document is the lowercased title of the object.
+// - Adds a set operation to the write batch, which will set the data of the document to the object.
+//
+// Note: The function currently does not commit the write batch, so the changes will not be applied to the Firestore database.
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit(); // this will actually start the batch process
+  console.log("done with batch");
+};
+
 export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {}
