@@ -25,6 +25,8 @@ import {
   setDoc,
   collection,
   writeBatch,
+  query,
+  getDocs,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -71,7 +73,7 @@ export const addCollectionAndDocuments = async (
   objectsToAdd
 ) => {
   const collectionRef = collection(db, collectionKey);
-  const batch = writeBatch(db);
+  const batch = writeBatch(db); // creates a batch objects that we will use to batch all the set operations that we will perform on the documents in the database
 
   objectsToAdd.forEach((object) => {
     const docRef = doc(collectionRef, object.title.toLowerCase());
@@ -80,6 +82,30 @@ export const addCollectionAndDocuments = async (
 
   await batch.commit(); // this will actually start the batch process
   console.log("done with batch");
+};
+
+export const getCategoriesAndDocuments = async () => {
+  // Get a reference to the 'categories' collection in the Firestore database
+  const collectionRef = collection(db, "categories");
+
+  // Create a query against the collection
+  const q = query(collectionRef);
+
+  // Execute the query and get a snapshot of the documents in the collection
+  const querySnapshot = await getDocs(q);
+
+  // Reduce the documents in the snapshot to a single object (categoryMap)
+  // For each document, get the 'title' and 'items' fields
+  // Add a new property to the accumulator object (acc) where the key is the lowercased title and the value is the items
+  // Return the accumulator object
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnaphot) => {
+    const { title, items } = docSnaphot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  // Return the categoryMap object
+  return categoryMap;
 };
 
 export const createUserDocumentFromAuth = async (
