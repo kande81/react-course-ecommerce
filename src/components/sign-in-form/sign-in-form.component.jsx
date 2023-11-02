@@ -75,7 +75,7 @@ const SignInForm = () => {
           >
             {" "}
             {/*the google button needs to be of type button so that it doesn't submit the form when clicked*/}
-            Sign In With Google
+            GOOGLE SIGN IN
           </Button>
         </ButtonsContainer>
       </form>
