@@ -1,3 +1,4 @@
+// these are the styled components that we are importing into this file
 import {
   BaseButton,
   GoogleSignInButton,
@@ -28,7 +29,7 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) =>
   }[buttonType]); // here we are using the bracket notation to access the object's key-value pairs
 
 const Button = ({ children, buttonType, ...otherProps }) => {
-  const CustomButton = getButton(buttonType); // CustomButton will be assigned the value of the button component returned by the getButton function
+  const CustomButton = getButton(buttonType); // CustomButton will be assigned the value of the button component returned by the getButton function which is one of the following: BaseButton, GoogleSignInButton, or InvertedButton imported above
   return <CustomButton {...otherProps}>{children}</CustomButton>;
 };
 

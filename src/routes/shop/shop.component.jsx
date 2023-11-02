@@ -4,8 +4,6 @@ import CategoriesPreview from "../categories-preview/categories-preview.componen
 // import Category from "../category/category.component";
 import Category from "../category/category.component";
 
-import "./shop.styles.scss";
-
 // inside this shop component, the routes are relative to the /shop route
 const Shop = () => {
   return (
