@@ -1,0 +1,1 @@
+export const selectCurrentUser = (state) => state.user.currentUser; // this is just a helper function that can be passed inside the useSelector hook as the definition of this function is what needs to be passed inside the useSelector hook

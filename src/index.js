@@ -4,21 +4,22 @@ import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom"; // BrowserRouter is a component that we wrap around our application so that our application gets all the functionality of routing
-import { UserProvider } from "./contexts/user.context";
 import { CategoriesProvider } from "./contexts/categories.context";
 import { CartProvider } from "./contexts/cart.context";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <UserProvider>
+  <Provider store={store}>
+    <BrowserRouter>
       <CategoriesProvider>
         <CartProvider>
           <App />
         </CartProvider>
       </CategoriesProvider>
-    </UserProvider>
-  </BrowserRouter>
+    </BrowserRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

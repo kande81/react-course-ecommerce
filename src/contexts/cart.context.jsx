@@ -1,6 +1,6 @@
 import { createContext, useState, useReducer } from "react";
 
-import { createAction } from "../utils/reducer/reducer.utils";
+import { createAction } from "../utils/reducer/reducer.utils"; // this is just a helper function that takes in a type and a payload and returns an object with those two keys
 
 const addCartItem = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(

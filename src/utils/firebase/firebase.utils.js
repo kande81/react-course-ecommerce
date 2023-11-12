@@ -97,7 +97,7 @@ export const getCategoriesAndDocuments = async () => {
   // Reduce the documents in the snapshot to a single object (categoryMap)
   // For each document, get the 'title' and 'items' fields
   // Add a new property to the accumulator object (acc) where the key is the lowercased title and the value is the items
-  // Return the accumulator object
+  // Return the accumulator object. so the final result will be an object that has a property for each category and the value of each property will be an array of items
   const categoryMap = querySnapshot.docs.reduce((acc, docSnaphot) => {
     const { title, items } = docSnaphot.data();
     acc[title.toLowerCase()] = items;
