@@ -19,7 +19,7 @@ import {
 const Navigation = () => {
   // the signOutHandler function is used to sign out the user
   const { isCartOpen } = useContext(CartContext);
-  const currentUser = useSelector(selectCurrentUser); // when using useSelector, it will re-run whenever the state changes. that will then cause the component to re-render
+  const currentUser = useSelector(selectCurrentUser); // when using useSelector, it will re-run whenever the state changes. that will then cause the component to re-render. the selectCurrentUser is a helper function that returns the function that is normaly passed as the argument to useSelector.
 
   return (
     <>
