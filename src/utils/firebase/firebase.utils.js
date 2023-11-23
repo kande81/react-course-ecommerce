@@ -27,6 +27,7 @@ import {
   writeBatch,
   query,
   getDocs,
+  DocumentSnapshot,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -98,14 +99,8 @@ export const getCategoriesAndDocuments = async () => {
   // For each document, get the 'title' and 'items' fields
   // Add a new property to the accumulator object (acc) where the key is the lowercased title and the value is the items
   // Return the accumulator object. so the final result will be an object that has a property for each category and the value of each property will be an array of items
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnaphot) => {
-    const { title, items } = docSnaphot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
 
-  // Return the categoryMap object
-  return categoryMap;
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 };
 
 export const createUserDocumentFromAuth = async (
@@ -113,9 +108,7 @@ export const createUserDocumentFromAuth = async (
   additionalInformation = {}
 ) => {
   const userRef = doc(db, "users", userAuth.uid); // this is saying to create a document reference object for a user in the users collection with that uid
-  console.log(userRef);
   const userSnapShot = await getDoc(userRef); // this is the document data that we will use to check if the document exists in the database. it returns a document snapshot object that has a property called exists that we can use to check if the document exists in the database
-  console.log(userSnapShot);
   if (!userSnapShot.exists()) {
     // if the document does not exist in the database then we will create the document in the database
     const { displayName, email } = userAuth; // we will get the displayName and email from the userAuth object that is returned from the google sign in process
@@ -128,9 +121,7 @@ export const createUserDocumentFromAuth = async (
         createdAt,
         ...additionalInformation,
       }); // this will create the document in the database
-    } catch (error) {
-      console.log("error creating user", error.message);
-    }
+    } catch (error) {}
   }
   return userRef;
 };

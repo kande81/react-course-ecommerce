@@ -1,11 +1,10 @@
 import { Outlet, Link } from "react-router-dom"; // the outlet is a placeholder for where the child components will be rendered. the link component is used to link to other pages in the app. it is similar to the anchor tag in html
-import { useContext } from "react";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { useSelector } from "react-redux"; // the useSelector hook helps us interact with the redux store
-import { CartContext } from "../../contexts/cart.context";
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 import { selectCurrentUser } from "../../store/user/user.selector";
+import { selectIsCartOpen } from "../../store/cart/cart.selector";
 
 import { ReactComponent as CrownLogo } from "../../assets/crown.svg"; // the react component as syntax allows us to import svgs as react components. this allows us to style the svg with css. the svg is stored in the crownLogo variable
 import {
@@ -18,7 +17,8 @@ import {
 // when the useContext hook is used inside a component, that component will re-render any time the value of the UserContext changes
 const Navigation = () => {
   // the signOutHandler function is used to sign out the user
-  const { isCartOpen } = useContext(CartContext);
+  // const { isCartOpen } = useContext(CartContext);
+  const isCartOpen = useSelector(selectIsCartOpen);
   const currentUser = useSelector(selectCurrentUser); // when using useSelector, it will re-run whenever the state changes. that will then cause the component to re-render. the selectCurrentUser is a helper function that returns the function that is normaly passed as the argument to useSelector.
 
   return (

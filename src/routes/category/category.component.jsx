@@ -9,7 +9,7 @@ import { CategoryContainer, Title } from "./category.styles";
 
 const Category = () => {
   const { category } = useParams();
-  const categoriesMap = useSelector(selectCategoriesMap);
+  const categoriesMap = useSelector(selectCategoriesMap); // categoriesMap is an object with keys as category titles and values as arrays of products
 
   const [products, setProducts] = useState(categoriesMap[category]);
 
