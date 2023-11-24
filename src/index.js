@@ -4,7 +4,6 @@ import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom"; // BrowserRouter is a component that we wrap around our application so that our application gets all the functionality of routing
-import { CartProvider } from "./contexts/cart.context";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 
