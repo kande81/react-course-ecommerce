@@ -11,19 +11,19 @@ import { rootReducer } from "./root-reducer";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 
-const loggerMiddleware = (store) => (next) => (action) => {
-  if (!action.type) {
-    return next(action);
-  }
+// const loggerMiddleware = (store) => (next) => (action) => {
+//   if (!action.type) {
+//     return next(action);
+//   }
 
-  console.log("type:", action.type);
-  console.log("payload:", action.payload);
-  console.log("current state:", store.getState());
-  // here when we call next with the action, we are passing the action to the next middleware in the chain. If there is no next middleware in the chain, then the action is passed to the root reducer. afetr the action is passed to the root reducer, the state is updated and the new state is returned and the control is passed back to the middleware, which then logs the new state.
-  next(action);
+//   console.log("type:", action.type);
+//   console.log("payload:", action.payload);
+//   console.log("current state:", store.getState());
+//   // here when we call next with the action, we are passing the action to the next middleware in the chain. If there is no next middleware in the chain, then the action is passed to the root reducer. afetr the action is passed to the root reducer, the state is updated and the new state is returned and the control is passed back to the middleware, which then logs the new state.
+//   next(action);
 
-  console.log("next state:", store.getState());
-};
+//   console.log("next state:", store.getState());
+// };
 
 // we can add as many middlewares as we want to this array. when an action is dispatched the middlewares will catch the action and do something with it before it reaches the root reducer
 // const middlewares = [logger];

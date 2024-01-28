@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 /*
 the way the this code will work is that when selectCategoriesMap is called in the useSelector it 
-will first run the definition of the selectCategoriesRedcer which will return the value of state.categories
+will first run the definition of the selectCategoriesReducer which will return the value of state.categories
 . Then it will check whether the object returned by state.categories has changed or not. If it has not changed
 then it will return the value of the previous call of selectCategoriesMap. If it has changed then it will first
 run the function of selectCategories and then check if that has changed or not. If it has not changed then it will again immediately return the value of the previous call of selectCategoriesMap. If it has changed then it will run the function of selectCategoriesMap and return the value of that function.
