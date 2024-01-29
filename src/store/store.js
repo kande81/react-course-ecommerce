@@ -28,7 +28,7 @@ import thunk from "redux-thunk";
 // we can add as many middlewares as we want to this array. when an action is dispatched the middlewares will catch the action and do something with it before it reaches the root reducer
 // const middlewares = [logger];
 
-// here by using 'process.env.NODE_ENV == 'development' && logger' we are saying that if the process.env.NODE_ENV is development then add the logger middleware to the middlewares array. If the process.env.NODE_ENV is not development then don't add the logger middleware to the middlewares array. This is because we don't want to log the state in the console when the app is in production mode. then when we use '.filter(Boolen)' on the array, what that does is if the result inside the array is false then it wil return an empty array. If the result inside the array is true then it will return the array with the logger middleware in it. So if the process.env.NODE_ENV is development then the middlewares array will be [logger] and if the process.env.NODE_ENV is not development then the middlewares array will be an empty array.
+// here by using 'process.env.NODE_ENV == 'development' && logger' we are saying that if the process.env.NODE_ENV is development then add the logger middleware to the middlewares array. If the process.env.NODE_ENV is not development then don't add the logger middleware to the middlewares array. This is because we don't want to log the state in the console when the app is in production mode. then when we use '.filter(Boolen)' on the array, what that does is if the result inside the array is false then it wil return an empty array. If the result inside the array is true then it will return the array with the logger middleware in it. So if the process.env.NODE_ENV is development then the middlewares array will be [logger] and thunk and if the process.env.NODE_ENV is not development then the middlewares array will just contain thunk.
 const middlewares = [
   process.env.NODE_ENV === "development" && logger,
   thunk,
@@ -37,7 +37,7 @@ const middlewares = [
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["user"],
+  whitelist: ["cart"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

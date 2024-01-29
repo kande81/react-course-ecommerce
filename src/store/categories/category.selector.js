@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 /*
+the 'stat' parameter in this function refers to the whole reducer object in the root-reducer.js file
 the way the this code will work is that when selectCategoriesMap is called in the useSelector it 
 will first run the definition of the selectCategoriesReducer which will return the value of state.categories
 . Then it will check whether the object returned by state.categories has changed or not. If it has not changed
@@ -23,6 +24,10 @@ export const selectCategoriesMap = createSelector(
     }, {})
 );
 
+export const selectCategoriesIsLoading = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice) => categoriesSlice.isLoading
+);
 // code without reselect
 // // the return of this selector is an object with the categories as keys and the items as values. This selector gets the the categories initial state from the categories reducer which is an array and reduce it to the object.
 // export const selectCategoriesMap = (state) => {
