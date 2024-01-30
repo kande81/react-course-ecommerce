@@ -3,7 +3,8 @@ import {
   legacy_createStore as createStore,
   applyMiddleware,
 } from "redux";
-
+import createSagaMiddleware from "redux-saga"; // this is the middleware that will run the sagas. in order for this to work we need to import the root saga in this file which is done here.
+import { rootSaga } from "./root-saga";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -11,27 +12,11 @@ import { rootReducer } from "./root-reducer";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 
-// const loggerMiddleware = (store) => (next) => (action) => {
-//   if (!action.type) {
-//     return next(action);
-//   }
+const sagaMiddleware = createSagaMiddleware(); // you will pass this inside the 'middlewares' variable below.
 
-//   console.log("type:", action.type);
-//   console.log("payload:", action.payload);
-//   console.log("current state:", store.getState());
-//   // here when we call next with the action, we are passing the action to the next middleware in the chain. If there is no next middleware in the chain, then the action is passed to the root reducer. afetr the action is passed to the root reducer, the state is updated and the new state is returned and the control is passed back to the middleware, which then logs the new state.
-//   next(action);
-
-//   console.log("next state:", store.getState());
-// };
-
-// we can add as many middlewares as we want to this array. when an action is dispatched the middlewares will catch the action and do something with it before it reaches the root reducer
-// const middlewares = [logger];
-
-// here by using 'process.env.NODE_ENV == 'development' && logger' we are saying that if the process.env.NODE_ENV is development then add the logger middleware to the middlewares array. If the process.env.NODE_ENV is not development then don't add the logger middleware to the middlewares array. This is because we don't want to log the state in the console when the app is in production mode. then when we use '.filter(Boolen)' on the array, what that does is if the result inside the array is false then it wil return an empty array. If the result inside the array is true then it will return the array with the logger middleware in it. So if the process.env.NODE_ENV is development then the middlewares array will be [logger] and thunk and if the process.env.NODE_ENV is not development then the middlewares array will just contain thunk.
 const middlewares = [
   process.env.NODE_ENV === "development" && logger,
-  thunk,
+  sagaMiddleware,
 ].filter(Boolean);
 
 const persistConfig = {
@@ -60,4 +45,5 @@ export const store = createStore(
   composedEnhancers
 );
 
+sagaMiddleware.run(rootSaga); // this is how you run the root saga. it's important to run this after the store is created.
 export const persistor = persistStore(store); // persistor is a persisted version of our store
