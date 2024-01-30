@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import {
   onAuthStateChangedListener,
   createUserDocumentFromAuth,
+  getCurrentUser,
 } from "./utils/firebase/firebase.utils";
 
 import Navigation from "./routes/navigation/navigation.component";
@@ -21,14 +22,7 @@ import { useDispatch } from "react-redux"; // useDispatch is a hook that gives u
 const App = () => {
   const dispatch = useDispatch(); //this dispatch reference will never change because it is a function that will always be the same. So we don't need to add it to the dependency array of the useEffect hook
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      if (user) {
-        createUserDocumentFromAuth(user);
-      }
-      dispatch(setCurrentUser(user));
-    });
-
-    return unsubscribe; // this is the cleanup function that will run when the component unmounts. unsubscribe is actually a function. In a useEffect hook, you can return a function that will run when the component unmounts. This is called the cleanup function.
+    getCurrentUser();
   }, []);
 
   return (

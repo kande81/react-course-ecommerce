@@ -48,6 +48,7 @@ const provider = new GoogleAuthProvider(); // this is the google auth provider c
 provider.setCustomParameters({ prompt: "select_account" }); // this will always trigger the google pop up whenever we use the google auth provider for authentication and sign in
 
 export const auth = getAuth(); // the auth keep track of the authentication state every time the user signs in or signs out. it is especially useful during rediredt sign in
+console.log("auth", auth);
 
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider); // this is the function that we will use to sign in with google using the google auth provider
 export const signInWithGoogleRedirect = () =>
@@ -144,3 +145,19 @@ export const signOutUser = async () => signOut(auth);
 // it will always listen for any changes in the authentication state of the user
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+// this function is used to check if the user is signed in or not. this particular setup
+// here is for using it with redux-saga.
+// export const getCurrentUser = () => {}. note that When you call onAuthStateChanged, it returns a function that you can call to unsubscribe from the listener. that is why we are able to call it inside the onAuthStateChanged function. note also that the 3rd argument to the onAuthStateChanged function is a function that will be called if there is an error in the authentication process. so we are passing the reject function from the promise to it and it will be called with the error as the argument if there is an error in the authentication process
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};
