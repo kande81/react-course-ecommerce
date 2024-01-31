@@ -3,6 +3,8 @@
 import USER_ACTION_TYPES from "./user.types";
 const INITIAL_STATE = {
   currentUser: null,
+  isLoading: false,
+  error: null,
 };
 
 // when using redux all the reducers get fired when any action is fired. So we need to make sure that the reducer is only going to update when the action type is the one that we want.
@@ -11,8 +13,10 @@ export const userReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case USER_ACTION_TYPES.SET_CURRENT_USER:
+    case USER_ACTION_TYPES.SIGN_IN_SUCCESS:
       return { ...state, currentUser: payload };
+    case USER_ACTION_TYPES.SIGN_IN_FAILED:
+      return { ...state, error: payload };
     default:
       return state;
   }

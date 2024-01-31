@@ -142,7 +142,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 export const signOutUser = async () => signOut(auth);
 
 // the onAuthStateChanged firebase function is an open listener, meaning that after we call it
-// it will always listen for any changes in the authentication state of the user
+// it will always listen for any changes in the authentication state of the user. The callback function you provide as an argument is called every time the user's sign-in state changes.
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
 
