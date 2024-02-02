@@ -104,12 +104,14 @@ export const getCategoriesAndDocuments = async () => {
   return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 };
 
+// here the userAuth parameter will be the user object which was destructured from the userCredential object that was returned from the signInWithGooglePopup function. the relevant properties on the user object are the displayname, the email, and uid. but there are other properties on it as well.
 export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {}
 ) => {
+  // the doc function will return an object called va that among others will have a property called id that will be the same as the uid of the user object that was passed in as userAuth. it will also have a path property whose value will be a string in the form users/<id>
   const userRef = doc(db, "users", userAuth.uid); // this is saying to create a document reference object for a user in the users collection with that uid
-  const userSnapShot = await getDoc(userRef); // this is the document data that we will use to check if the document exists in the database. it returns a document snapshot object that has a property called exists that we can use to check if the document exists in the database
+  const userSnapShot = await getDoc(userRef); // this is the document data that we will use to check if the document exists in the database. it returns a document snapshot object called Ou that has a property called exists that we can use to check if the document exists in the database. it also has an id property that is the as the id of the user object that was passed in as userAuth
   if (!userSnapShot.exists()) {
     // if the document does not exist in the database then we will create the document in the database
     const { displayName, email } = userAuth; // we will get the displayName and email from the userAuth object that is returned from the google sign in process
@@ -124,9 +126,11 @@ export const createUserDocumentFromAuth = async (
       }); // this will create the document in the database
     } catch (error) {}
   }
-  return userRef;
+  return userSnapShot;
 };
 
+// this function creates a userAuth (i.e an authenticated user in the firebase authentication system)
+// but it does not create a user document in the database. it only creates a userAuth in the firebase authentication system
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
